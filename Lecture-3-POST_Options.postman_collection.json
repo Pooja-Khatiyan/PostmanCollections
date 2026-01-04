@@ -1,0 +1,97 @@
+{
+	"info": {
+		"_postman_id": "9382ae46-f70a-44e4-bfd3-e8f3447085d0",
+		"name": "Lecture-3:POST_Options",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27729383",
+		"_collection_link": "https://galactic-comet-243943.postman.co/workspace/APILearning~1c523ad8-f6fc-445b-aa3a-4366d6901308/collection/27729383-9382ae46-f70a-44e4-bfd3-e8f3447085d0?action=share&source=collection_link&creator=27729383"
+	},
+	"item": [
+		{
+			"name": "NullBody",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://httpbin.org/post",
+					"protocol": "https",
+					"host": [
+						"httpbin",
+						"org"
+					],
+					"path": [
+						"post"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Raw:JSON",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\" :\"Pooja\",\r\n    \"city\": \"Muzaffarnagar\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://httpbin.org/post",
+					"protocol": "https",
+					"host": [
+						"httpbin",
+						"org"
+					],
+					"path": [
+						"post"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "form-data",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Name",
+							"value": "Pooja",
+							"type": "text"
+						},
+						{
+							"key": "City",
+							"value": "Muzaffarnagar",
+							"type": "text"
+						},
+						{
+							"key": "Resume",
+							"type": "file",
+							"src": "/C:/Users/pooja/OneDrive/Desktop/POOJA_RESUME...pdf"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://httpbin.org/post",
+					"protocol": "https",
+					"host": [
+						"httpbin",
+						"org"
+					],
+					"path": [
+						"post"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

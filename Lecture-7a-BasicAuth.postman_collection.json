@@ -1,0 +1,81 @@
+{
+	"info": {
+		"_postman_id": "ddac2883-680a-4c92-8e13-acccb64fb048",
+		"name": "Lecture-7a:BasicAuth",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27729383",
+		"_collection_link": "https://galactic-comet-243943.postman.co/workspace/APILearning~1c523ad8-f6fc-445b-aa3a-4366d6901308/collection/27729383-ddac2883-680a-4c92-8e13-acccb64fb048?action=share&source=collection_link&creator=27729383"
+	},
+	"item": [
+		{
+			"name": "1-BasicAuthApi",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://the-internet.herokuapp.com/basic_auth",
+					"protocol": "https",
+					"host": [
+						"the-internet",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"basic_auth"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2-AuthApiByBooker",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\" : \"admin\",\r\n    \"password\" : \"password123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://restful-booker.herokuapp.com/auth",
+					"protocol": "https",
+					"host": [
+						"restful-booker",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"auth"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

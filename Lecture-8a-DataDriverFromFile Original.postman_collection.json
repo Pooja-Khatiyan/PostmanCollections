@@ -1,0 +1,125 @@
+{
+	"info": {
+		"_postman_id": "9db4cbff-f8ba-470d-8361-0d0a2f12a20b",
+		"name": "Lecture-8a:DataDriverFromFile Original",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27729383",
+		"_collection_link": "https://galactic-comet-243943.postman.co/workspace/APILearning~1c523ad8-f6fc-445b-aa3a-4366d6901308/collection/27729383-9db4cbff-f8ba-470d-8361-0d0a2f12a20b?action=share&source=collection_link&creator=27729383"
+	},
+	"item": [
+		{
+			"name": "1-ReadDataFromJsonFile",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"requestJson\", JSON.stringify(pm.iterationData.toObject()))"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{{requestJson}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "httpbin.org/post",
+					"host": [
+						"httpbin",
+						"org"
+					],
+					"path": [
+						"post"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2-CreateUserByJsonFile",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer a33ec5a74ebe7eca4397f5dc9ef94914da3c191afec5ad907ca21087a66f1454",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"name\": \"{{name}}\",\r\n        \"email\":\"{{$randomEmail}}\",\r\n        \"gender\": \"{{gender}}\",\r\n        \"status\": \"{{status}}\"\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://gorest.co.in/public/v2/users",
+					"protocol": "https",
+					"host": [
+						"gorest",
+						"co",
+						"in"
+					],
+					"path": [
+						"public",
+						"v2",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3-CreateUserByCsvFile",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer be3852a5b71e12150476a6c66f8e43f48ab1db7163cd01360ad51bd7bc012468",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"name\": \"{{name}}\",\r\n        \"email\":\"{{$randomEmail}}\",\r\n        \"gender\": \"{{gender}}\",\r\n        \"status\": \"{{status}}\"\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://gorest.co.in/public/v2/users",
+					"protocol": "https",
+					"host": [
+						"gorest",
+						"co",
+						"in"
+					],
+					"path": [
+						"public",
+						"v2",
+						"users"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

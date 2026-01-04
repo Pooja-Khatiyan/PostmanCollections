@@ -1,0 +1,192 @@
+{
+	"info": {
+		"_postman_id": "c7474a76-e727-41b5-8c3f-7a38a44e3ec9",
+		"name": "Lecture-9a:GET-PUT Chaining",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27729383",
+		"_collection_link": "https://galactic-comet-243943.postman.co/workspace/APILearning~1c523ad8-f6fc-445b-aa3a-4366d6901308/collection/27729383-c7474a76-e727-41b5-8c3f-7a38a44e3ec9?action=share&source=collection_link&creator=27729383"
+	},
+	"item": [
+		{
+			"name": "1-TokenApi",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if(pm.request.method == 'POST'){ \r",
+							"       pm.test(\"status code is 200\", function(){      \r",
+							"        pm.response.to.have.status(200);  \r",
+							"     });\r",
+							"}\r",
+							"\r",
+							"pm.test(\"Response time is less than 5000ms\", function(){\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"poojakhatiyan021@gmail.com\",\r\n    \"password\" : \"Test@12345\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/users/login",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"users",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2-GetAllUsers",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const getResponse = pm.response.json();\r",
+							"const userIds = getResponse.map(user => user.id);\r",
+							"console.log(userIds);\r",
+							"pm.variables.set(\"user_ids\",userIds);"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.sendRequest(\r",
+							"    {\r",
+							"        url: pm.environment.get(\"baseurl\")+'/users/login',\r",
+							"        method: 'POST',\r",
+							"        header: {\r",
+							"            'Content-Type': 'application/json'\r",
+							"        },\r",
+							"        body: {\r",
+							"            mode: 'raw',\r",
+							"            raw: JSON.stringify({\r",
+							"                \"email\": pm.environment.get(\"email\"),\r",
+							"                \"password\": pm.environment.get(\"password\")\r",
+							"            })\r",
+							"        }\r",
+							"    }, \r",
+							"    function(error, response) {\r",
+							"        if (error) {\r",
+							"            console.log(\"Error: \", error);\r",
+							"        } else {\r",
+							"            console.log(\"Full Response: \", response.text());  // Debug line\r",
+							"            const responseData = JSON.parse(response.text());\r",
+							"            const tokenID = responseData.token;\r",
+							"            console.log(\"Token ID is = \" + tokenID);\r",
+							"            pm.variables.set(\"contact_token_ID\", tokenID);\r",
+							"        }\r",
+							"    }\r",
+							");"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{contact_token_ID}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseURL}}/public/v2/users",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"public",
+						"v2",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3-UpdateUser",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const userIds = pm.variables.get(\"user_ids\");\r",
+							"pm.variables.set(\"singleUserIds\",userIds.shift());\r",
+							"if(Array.isArray(userIds) && userIds.length > 0){\r",
+							"    pm.execution.setNextRequest(\"2-UpdateUser\");\r",
+							"}else{\r",
+							"    console.log(\"all users are updated\");\r",
+							"    pm.execution.setNextRequest(null);\r",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{TokenID}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Pooja Khatiyan\",\r\n    \"status\": \"inactive\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/public/v2/users/{{singleUserIds}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"public",
+						"v2",
+						"users",
+						"{{singleUserIds}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

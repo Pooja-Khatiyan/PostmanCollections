@@ -1,0 +1,17 @@
+[
+    {
+        "name": "Pooja",
+        "gender": "female",
+        "status": "active"
+    },
+    {
+        "name": "Anshul",
+        "gender": "male",
+        "status": "active"
+    },
+    {
+        "name": "Aahan",
+        "gender": "male",
+        "status": "active"
+    }
+]

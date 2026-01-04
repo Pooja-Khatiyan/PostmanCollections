@@ -1,0 +1,38 @@
+{
+	"info": {
+		"_postman_id": "778dff0f-6335-4fda-a33a-2fb633824ed5",
+		"name": "Lecture-_14a:FileUpload",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27729383",
+		"_collection_link": "https://galactic-comet-243943.postman.co/workspace/APILearning~1c523ad8-f6fc-445b-aa3a-4366d6901308/collection/27729383-778dff0f-6335-4fda-a33a-2fb633824ed5?action=share&source=collection_link&creator=27729383"
+	},
+	"item": [
+		{
+			"name": "FileUpload",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/C:/Users/pooja/OneDrive/Desktop/NewTextDoc.txt"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{Url}}/post",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"post"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

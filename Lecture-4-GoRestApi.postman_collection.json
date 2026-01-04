@@ -1,0 +1,386 @@
+{
+	"info": {
+		"_postman_id": "4cdfad40-fbc8-4fac-9197-149dc968d552",
+		"name": "Lecture-4:GoRestApi",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27729383",
+		"_collection_link": "https://galactic-comet-243943.postman.co/workspace/APILearning~1c523ad8-f6fc-445b-aa3a-4366d6901308/collection/27729383-4cdfad40-fbc8-4fac-9197-149dc968d552?action=share&source=collection_link&creator=27729383"
+	},
+	"item": [
+		{
+			"name": "1-GetAllUsers",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var template = `\r",
+							"<table bgcolor=\"#FFFFFF\" border=\"1\" cellpadding=\"5\" cellspacing=\"0\">\r",
+							"    <tr bgcolor=\"#ff7f39\">\r",
+							"        <th>ID</th>\r",
+							"        <th>Name</th>\r",
+							"        <th>Email</th>\r",
+							"        <th>Gender</th>\r",
+							"        <th>Status</th>\r",
+							"    </tr>\r",
+							"\r",
+							"    {{#each response}}\r",
+							"    <tr>\r",
+							"        <td>{{id}}</td>\r",
+							"        <td>{{name}}</td>\r",
+							"        <td>{{email}}</td>\r",
+							"        <td>{{gender}}</td>\r",
+							"        <td>{{status}}</td>\r",
+							"    </tr>\r",
+							"    {{/each}}\r",
+							"</table>\r",
+							"`;\r",
+							"\r",
+							"pm.visualizer.set(template, {\r",
+							"    response: pm.response.json()\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{TokenID}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseURL}}/public/v2/users",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"public",
+						"v2",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "1a-GetAllUsersByQueryParam",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var template = `\r",
+							"<table bgcolor=\"#FFFFFF\" border=\"1\" cellpadding=\"5\" cellspacing=\"0\">\r",
+							"    <tr bgcolor=\"#ff7f39\">\r",
+							"        <th>ID</th>\r",
+							"        <th>Name</th>\r",
+							"        <th>Email</th>\r",
+							"        <th>Gender</th>\r",
+							"        <th>Status</th>\r",
+							"    </tr>\r",
+							"\r",
+							"    {{#each response}}\r",
+							"    <tr>\r",
+							"        <td>{{id}}</td>\r",
+							"        <td>{{name}}</td>\r",
+							"        <td>{{email}}</td>\r",
+							"        <td>{{gender}}</td>\r",
+							"        <td>{{status}}</td>\r",
+							"    </tr>\r",
+							"    {{/each}}\r",
+							"</table>\r",
+							"`;\r",
+							"\r",
+							"pm.visualizer.set(template, {\r",
+							"    response: pm.response.json()\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{TokenID}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseURL}}/public/v2/users?name=pooja&status=active",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"public",
+						"v2",
+						"users"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "pooja"
+						},
+						{
+							"key": "status",
+							"value": "active"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2-GetSpecificUser",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{TokenID}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseURL}}/public/v2/users/:userId",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"public",
+						"v2",
+						"users",
+						":userId"
+					],
+					"variable": [
+						{
+							"key": "userId",
+							"value": "8302001"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3-CreateUser",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{TokenID}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Pooja Khatiyan\",\r\n    \"email\": \"dummy.users@yopmail.com\",\r\n    \"gender\": \"female\",\r\n    \"status\": \"active\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/public/v2/users",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"public",
+						"v2",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "4-FetchCreatedUser",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{TokenID}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseURL}}/public/v2/users/8302221",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"public",
+						"v2",
+						"users",
+						"8302221"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "5-UpdateCreatedUser",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{TokenID}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Pooja Choudhary\",\r\n    \"email\": \"dummy.user@yopmail.com\",\r\n    \"gender\": \"female\",\r\n    \"status\": \"active\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/public/v2/users/8302221",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"public",
+						"v2",
+						"users",
+						"8302221"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "6-FetchUpdateUser",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{TokenID}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseURL}}/public/v2/users/8302221",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"public",
+						"v2",
+						"users",
+						"8302221"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "7-DeleteUpdateUser",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{TokenID}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseURL}}/public/v2/users/8301954",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"public",
+						"v2",
+						"users",
+						"8301954"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "8-FetchDeletedUser",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{TokenID}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseURL}}/public/v2/users/8301954",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"public",
+						"v2",
+						"users",
+						"8301954"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": ""
+		},
+		{
+			"key": "TokenID",
+			"value": ""
+		}
+	]
+}

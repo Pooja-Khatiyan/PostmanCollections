@@ -1,0 +1,232 @@
+{
+	"info": {
+		"_postman_id": "3e7d5e99-167f-43a9-b829-afa48ed030fd",
+		"name": "Lecture-9b:ImportantScripts",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27729383",
+		"_collection_link": "https://galactic-comet-243943.postman.co/workspace/APILearning~1c523ad8-f6fc-445b-aa3a-4366d6901308/collection/27729383-3e7d5e99-167f-43a9-b829-afa48ed030fd?action=share&source=collection_link&creator=27729383"
+	},
+	"item": [
+		{
+			"name": "1-AddHeaderUsingScript",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"//single header\r",
+							"// pm.request.headers.add({\r",
+							"//     key:'x-chrome',\r",
+							"//     value :'106'\r",
+							"// });\r",
+							"//multiple header\r",
+							"// pm.request.headers.add({key : 'x-chrome',value :'106'});\r",
+							"// pm.request.headers.add({key : 'x-firefox',value :'107'});\r",
+							"// pm.request.headers.add({key : 'x-edge',value :'108'});\r",
+							"// pm.request.headers.add({key : 'x-safari',value :'109'});\r",
+							"\r",
+							"//adding header through object\r",
+							"const myHeader = [\r",
+							"    {key : 'x-chrome',value :'106'},\r",
+							"    {key : 'x-firefox',value :'109'},\r",
+							"    {key : 'x-edge',value :'108'}\r",
+							"    ]\r",
+							"\r",
+							"myHeader.forEach(h=>pm.request.headers.add(h));"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{TokenID}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseURL}}/public/v2/users",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"public",
+						"v2",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2-RemoveHeader",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.request.headers.remove('Authorization');"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{TokenID}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseURL}}/public/v2/users",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"public",
+						"v2",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3-UpdateHeader",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.request.headers.upsert({\r",
+							"    key: \"Authorization\",\r",
+							"    value : \"Bearer xyz\"\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{TokenID}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseURL}}/public/v2/users",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"public",
+						"v2",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "4-ParseHTMLResponseViaCheerioApi",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"require ('cheerio');\r",
+							"pm.test(\"Body contains The Internet\", function(){\r",
+							"    pm.expect(pm.response.text()).to.include(\"The Internet\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Body contains Form Attribute\", function(){\r",
+							"const res = cheerio.load(pm.response.text());\r",
+							"const loginForm = res('[name=\"login\"]');\r",
+							"console.log(\"login form = \" + loginForm);\r",
+							"const formAction = loginForm.attr(\"action\");\r",
+							"console.log(\"action = \" + formAction);\r",
+							"console.log(\"form length = \" + loginForm.length);\r",
+							"pm.expect(loginForm.length).to.be.above(0);\r",
+							"pm.expect(loginForm.find(\"#username\").length).to.be.equal(1);\r",
+							"pm.expect(loginForm.find(\"#password\").length).to.be.equal(1);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://the-internet.herokuapp.com/login",
+					"protocol": "https",
+					"host": [
+						"the-internet",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "5-Add a Delay Before Response",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"setTimeout(()=>{},5000);"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{TokenID}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseURL}}/public/v2/users",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"public",
+						"v2",
+						"users"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

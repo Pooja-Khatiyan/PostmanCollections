@@ -1,0 +1,306 @@
+{
+	"info": {
+		"_postman_id": "7a92517c-0b9b-4685-8293-62db10771a34",
+		"name": "Lecture-_10:ImportantScriptContinue...",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27729383",
+		"_collection_link": "https://galactic-comet-243943.postman.co/workspace/APILearning~1c523ad8-f6fc-445b-aa3a-4366d6901308/collection/27729383-7a92517c-0b9b-4685-8293-62db10771a34?action=share&source=collection_link&creator=27729383"
+	},
+	"item": [
+		{
+			"name": "6-GetDataFromArray",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const resData = pm.response.json();\r",
+							"const filterData = resData.json.filters;\r",
+							"console.log(filterData);\r",
+							"const countryData = filterData.find(e => e.name =='COUNTRY');\r",
+							"console.log(countryData);\r",
+							"pm.test(\"Check country data and array\", function () {\r",
+							"    pm.expect(countryData).to.have.property('isAllowed', false);\r",
+							"    pm.expect(countryData).to.be.exist;\r",
+							"    pm.expect(filterData).to.be.an('array');\r",
+							"    pm.expect(filterData.length).to.equal(3);\r",
+							"    pm.expect(countryData).to.have.property('id', 102);\r",
+							"    pm.expect(countryData).to.have.property('name', 'COUNTRY');\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"companyId\" : 10101,\r\n    \"regionId\" : 36554,\r\n    \"filters\":[\r\n        {\r\n            \"id\" : 101,\r\n            \"name\":\"VENDER\",\r\n            \"isAllowed\":false\r\n        },\r\n         {\r\n            \"id\" : 102,\r\n            \"name\":\"COUNTRY\",\r\n            \"isAllowed\":false\r\n        },\r\n         {\r\n            \"id\" : 103,\r\n            \"name\":\"MANUFACTURER\",\r\n            \"isAllowed\":false\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://httpbin.org/post",
+					"protocol": "http",
+					"host": [
+						"httpbin",
+						"org"
+					],
+					"path": [
+						"post"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "6a-PracticeNestedArray",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const resData = pm.response.json().json;\r",
+							"console.log(resData);\r",
+							"let filterData = [];\r",
+							"resData.forEach(company =>{\r",
+							"    company.filters.forEach(filter =>{ filterData.push(filter)})\r",
+							"})\r",
+							"console.log(filterData);\r",
+							"const countryData = filterData.filter(e => e.name == 'COUNTRY');\r",
+							"console.log(countryData);\r",
+							"pm.test(\"Check country data \", function () {\r",
+							"    countryData.forEach(e =>{\r",
+							"         pm.expect(e.isAllowed).to.be.false;\r",
+							"    })   \r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[{\r\n    \"companyId\" : 10101,\r\n    \"regionId\" : 36554,\r\n    \"filters\":[\r\n        {\r\n            \"id\" : 101,\r\n            \"name\":\"VENDER\",\r\n            \"isAllowed\":false\r\n        },\r\n         {\r\n            \"id\" : 102,\r\n            \"name\":\"COUNTRY\",\r\n            \"isAllowed\":false\r\n        },\r\n         {\r\n            \"id\" : 103,\r\n            \"name\":\"MANUFACTURER\",\r\n            \"isAllowed\":false\r\n        }\r\n    ]\r\n},\r\n{\r\n    \"companyId\" : 10109,\r\n    \"regionId\" : 36550,\r\n    \"filters\":[\r\n        {\r\n            \"id\" : 107,\r\n            \"name\":\"VENDER\",\r\n            \"isAllowed\":false\r\n        },\r\n         {\r\n            \"id\" : 109,\r\n            \"name\":\"COUNTRY\",\r\n            \"isAllowed\":false\r\n        },\r\n         {\r\n            \"id\" : 108,\r\n            \"name\":\"MANUFACTURER\",\r\n            \"isAllowed\":false\r\n        }\r\n    ]\r\n}\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://httpbin.org/post",
+					"protocol": "http",
+					"host": [
+						"httpbin",
+						"org"
+					],
+					"path": [
+						"post"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "7-PartialResponseCheck",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Check user partial data from response body\", function (){\r",
+							"const response = pm.response.json();\r",
+							"const ExpectedResponseObject ={\r",
+							"    \"id\": 8306150,\r",
+							"    \"name\": \"Aahan\",\r",
+							"    \"email\": \"Cyrus76@hotmail.com\",\r",
+							"    // \"gender\": \"male\",\r",
+							"    // \"status\": \"active\"\r",
+							"}\r",
+							"    pm.expect(response).to.include(ExpectedResponseObject);\r",
+							"    pm.expect(response).to.have.property(\"id\");\r",
+							"})\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer be3852a5b71e12150476a6c66f8e43f48ab1db7163cd01360ad51bd7bc012468",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"name\": \"{{name}}\",\r\n        \"email\":\"{{$randomEmail}}\",\r\n        \"gender\": \"{{gender}}\",\r\n        \"status\": \"{{status}}\"\r\n    }"
+				},
+				"url": {
+					"raw": "https://gorest.co.in/public/v2/users/8306150",
+					"protocol": "https",
+					"host": [
+						"gorest",
+						"co",
+						"in"
+					],
+					"path": [
+						"public",
+						"v2",
+						"users",
+						"8306150"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "8-AddRequestBodyDynamically",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"function getRandomNumber(minValue,maxValue){\r",
+							"return Math.floor(Math.random()*(maxValue-minValue)-minValue)\r",
+							"}\r",
+							"\r",
+							"function getRandomString(){\r",
+							"   return Math.random().toString(36).substring(2);\r",
+							"}\r",
+							"const emailID = \"api_\"+getRandomString()+\"@yop.com\";\r",
+							"//pm.environment.set(\"email_id\",email);\r",
+							"console.log(emailID);\r",
+							"const rawBody = pm.request.body.raw;\r",
+							"const requestBody = JSON.parse(rawBody);\r",
+							"console.log(requestBody);\r",
+							"requestBody.email = emailID;\r",
+							"console.log(requestBody);\r",
+							"pm.request.body.raw = requestBody;"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer be3852a5b71e12150476a6c66f8e43f48ab1db7163cd01360ad51bd7bc012468",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"name\": \"Pooja\",\r\n        \"gender\": \"female\",\r\n        \"status\": \"active\"\r\n     \r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://gorest.co.in/public/v2/users",
+					"protocol": "https",
+					"host": [
+						"gorest",
+						"co",
+						"in"
+					],
+					"path": [
+						"public",
+						"v2",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "9-FetchUrlFromResponseAndUseItInAPICall",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const resData = pm.response.json();\r",
+							"const urlData = resData.json.urls;\r",
+							"console.log(urlData);\r",
+							"\r",
+							"Object.keys(urlData).forEach(e =>{\r",
+							"    pm.test(\"Check Urls Test\",()=>{\r",
+							"    pm.sendRequest({\r",
+							"        'url': urlData[e],\r",
+							"        'method':'GET',\r",
+							"        'headers': {\r",
+							"            'Authorization': 'Bearer ' + pm.environment.get('TokenID'),\r",
+							"        }\r",
+							"    },(error,response)=>{\r",
+							"        if(error){\r",
+							"            console.log(error);\r",
+							"        }else{\r",
+							"            console.log(response.code);\r",
+							"            console.log(response.text());\r",
+							"        }\r",
+							"    })\r",
+							"    })\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"productname\": \"macbook pro\",\r\n    \"urls\":{\r\n        \"u1\":\"https://gorest.co.in/public/v2/users\",\r\n        \"u2\":\"https://gorest.co.in/public/v2/users?name=pooja&status=active\",\r\n        \"u3\":\"https://gorest.co.in/public/v2/users/8302221\"\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://httpbin.org/post",
+					"protocol": "http",
+					"host": [
+						"httpbin",
+						"org"
+					],
+					"path": [
+						"post"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

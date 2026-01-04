@@ -1,0 +1,37 @@
+{
+	"info": {
+		"_postman_id": "757e56c0-dafb-4681-b33b-dd9bd852b5ce",
+		"name": "Lecture-6:ReqresApi",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27729383",
+		"_collection_link": "https://galactic-comet-243943.postman.co/workspace/APILearning~1c523ad8-f6fc-445b-aa3a-4366d6901308/collection/27729383-757e56c0-dafb-4681-b33b-dd9bd852b5ce?action=share&source=collection_link&creator=27729383"
+	},
+	"item": [
+		{
+			"name": "CheckOptionMethod",
+			"request": {
+				"method": "OPTIONS",
+				"header": [],
+				"url": {
+					"raw": "https://reqres.in/api/users?page=2",
+					"protocol": "https",
+					"host": [
+						"reqres",
+						"in"
+					],
+					"path": [
+						"api",
+						"users"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

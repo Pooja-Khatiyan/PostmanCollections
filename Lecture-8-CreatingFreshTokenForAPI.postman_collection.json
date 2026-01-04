@@ -1,0 +1,338 @@
+{
+	"info": {
+		"_postman_id": "6b70e95b-cf2d-4200-b833-0ad78cf4eba0",
+		"name": "Lecture-8:CreatingFreshTokenForAPI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27729383",
+		"_collection_link": "https://galactic-comet-243943.postman.co/workspace/APILearning~1c523ad8-f6fc-445b-aa3a-4366d6901308/collection/27729383-6b70e95b-cf2d-4200-b833-0ad78cf4eba0?action=share&source=collection_link&creator=27729383"
+	},
+	"item": [
+		{
+			"name": "1-AuthApi",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// const response = pm.response.json();\r",
+							"// const tokenID = response.token;\r",
+							"// console.log(\"token id is = \" + tokenID);\r",
+							"\r",
+							"// pm.variables.set(\"token_id\",tokenID);"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\" : \"{{username}}\",\n    \"password\" : \"{{password}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/auth",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"auth"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2-GetBookingApi",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/booking",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"booking"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3-CreateABooking",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json();\r",
+							"const bookingID = response.bookingid;\r",
+							"console.log(\"Booking id is = \" + bookingID);\r",
+							"pm.variables.set(\"booking_id\", bookingID);"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"firstname\" : \"Jim\",\n    \"lastname\" : \"Brown\",\n    \"totalprice\" : 111,\n    \"depositpaid\" : true,\n    \"bookingdates\" : {\n        \"checkin\" : \"2018-01-01\",\n        \"checkout\" : \"2019-01-01\"\n    },\n    \"additionalneeds\" : \"Breakfast\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/booking",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"booking"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "4-GetSpecificBooking",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/booking/{{booking_id}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"booking",
+						"{{booking_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "5-UpdateBooking",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.sendRequest(\r",
+							"    {\r",
+							"        url: pm.environment.get(\"baseURL\")+'/auth',\r",
+							"        method: 'POST',\r",
+							"        header: {\r",
+							"            'Content-Type': 'application/json'\r",
+							"        },\r",
+							"        body: {\r",
+							"            mode: 'raw',\r",
+							"            raw: JSON.stringify({\r",
+							"                \"username\": pm.environment.get(\"username\"),\r",
+							"                \"password\": pm.environment.get(\"password\")\r",
+							"            })\r",
+							"        }\r",
+							"    }, \r",
+							"    function(error, response) {\r",
+							"        if (error) {\r",
+							"            console.log(\"Error: \", error);\r",
+							"        } else {\r",
+							"            console.log(\"Full Response: \", response.text());  // Debug line\r",
+							"            const responseData = JSON.parse(response.text());\r",
+							"            const tokenID = responseData.token;\r",
+							"            console.log(\"Token ID is = \" + tokenID);\r",
+							"            pm.variables.set(\"booking_token_ID\", tokenID);\r",
+							"        }\r",
+							"    }\r",
+							");"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Cookie",
+						"value": "token={{booking_token_ID}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"firstname\" : \"Pooja\",\n    \"lastname\" : \"Khatiyan\",\n    \"totalprice\" : 111,\n    \"depositpaid\" : true,\n    \"bookingdates\" : {\n        \"checkin\" : \"2018-01-01\",\n        \"checkout\" : \"2019-01-01\"\n    },\n    \"additionalneeds\" : \"Breakfast\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/booking/{{booking_id}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"booking",
+						"{{booking_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "6-PartialUpdate",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Cookie",
+						"value": "token={{booking_token_ID}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"firstname\" : \"James\",\n    \"lastname\" : \"Brown\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/booking/{{booking_id}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"booking",
+						"{{booking_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "7-DeleteBooking",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Cookie",
+						"value": "token={{booking_token_ID}}"
+					}
+				],
+				"url": {
+					"raw": "{{baseURL}}/booking/{{booking_id}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"booking",
+						"{{booking_id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					"if(pm.request.method == 'GET'){\r",
+					"    pm.test(\"status code is 200\", function(){\r",
+					"        pm.response.to.have.status(200);\r",
+					"    });\r",
+					"}\r",
+					"\r",
+					"\r",
+					"if(pm.request.method == 'POST'){\r",
+					"    pm.test(\"status code is 200\", function(){\r",
+					"        pm.response.to.have.status(200);\r",
+					"    });\r",
+					"}\r",
+					"\r",
+					"if(pm.request.method == 'PUT' || pm.request.method == 'PATCH'){\r",
+					"    pm.test(\"status code is 200\", function(){\r",
+					"        pm.response.to.have.status(200);\r",
+					"    });\r",
+					"}\r",
+					"\r",
+					"if(pm.request.method == 'DELETE'){\r",
+					"    pm.test(\"status code is 201\", function(){\r",
+					"        pm.response.to.have.status(201);\r",
+					"    });\r",
+					"}\r",
+					"\r",
+					"pm.test(\"Response time is less than 3000ms\", function(){\r",
+					"    pm.expect(pm.response.responseTime).to.be.below(3000);\r",
+					"});"
+				]
+			}
+		}
+	]
+}

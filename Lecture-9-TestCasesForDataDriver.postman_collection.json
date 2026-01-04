@@ -1,0 +1,213 @@
+{
+	"info": {
+		"_postman_id": "f46b33ea-dee9-4556-b844-d9009db79af0",
+		"name": "Lecture-9:TestCasesForDataDriver",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27729383",
+		"_collection_link": "https://galactic-comet-243943.postman.co/workspace/APILearning~1c523ad8-f6fc-445b-aa3a-4366d6901308/collection/27729383-f46b33ea-dee9-4556-b844-d9009db79af0?action=share&source=collection_link&creator=27729383"
+	},
+	"item": [
+		{
+			"name": "1-ReadDataFromJsonFile",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"requestJson\", JSON.stringify(pm.iterationData.toObject()))"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{{requestJson}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "httpbin.org/post",
+					"host": [
+						"httpbin",
+						"org"
+					],
+					"path": [
+						"post"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2-CreateUserByJsonFile",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"user data is correct\", function(){\r",
+							"   const response = pm.response.json();\r",
+							"   pm.expect(response.name).to.eql(pm.iterationData.get(\"name\"));\r",
+							"   pm.expect(response.gender).to.eql(pm.iterationData.get(\"gender\"));\r",
+							"   pm.expect(response.status).to.eql(pm.iterationData.get(\"status\"));\r",
+							"\r",
+							"   //for email id \r",
+							"const rawBody = pm.request.body.raw;\r",
+							"const reqBody = JSON.parse(rawBody);\r",
+							"const emailID =reqBody.email;\r",
+							"console.log(\"email id is = \" + emailID);\r",
+							"pm.expect(response.email).to.eql(emailID);\r",
+							"\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer be3852a5b71e12150476a6c66f8e43f48ab1db7163cd01360ad51bd7bc012468",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"name\": \"{{name}}\",\r\n        \"email\":\"{{$randomEmail}}\",\r\n        \"gender\": \"{{gender}}\",\r\n        \"status\": \"{{status}}\"\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://gorest.co.in/public/v2/users",
+					"protocol": "https",
+					"host": [
+						"gorest",
+						"co",
+						"in"
+					],
+					"path": [
+						"public",
+						"v2",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3-CreateUserByCsvFile",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"user data is correct\", function(){\r",
+							"const response = pm.response.json();\r",
+							"pm.expect(response.name).to.eql(pm.iterationData.get(\"name\"));\r",
+							"pm.expect(response.gender).to.eql(pm.iterationData.get(\"gender\"));\r",
+							"pm.expect(response.status).to.eql(pm.iterationData.get(\"status\"));\r",
+							"\r",
+							"\r",
+							"\r",
+							"   //for email id \r",
+							"const rawBody = pm.request.body.raw;\r",
+							"const reqBody = JSON.parse(rawBody); // JSON object to JS Object\r",
+							"const emailID =reqBody.email;\r",
+							"console.log(\"email id is = \" + emailID);\r",
+							"pm.expect(response.email).to.eql(emailID);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer be3852a5b71e12150476a6c66f8e43f48ab1db7163cd01360ad51bd7bc012468",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"name\": \"{{name}}\",\r\n        \"email\":\"{{$randomEmail}}\",\r\n        \"gender\": \"{{gender}}\",\r\n        \"status\": \"{{status}}\"\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://gorest.co.in/public/v2/users",
+					"protocol": "https",
+					"host": [
+						"gorest",
+						"co",
+						"in"
+					],
+					"path": [
+						"public",
+						"v2",
+						"users"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					"if(pm.request.method == 'POST'){\r",
+					"    pm.test(\"status code is 201\", function(){\r",
+					"        pm.response.to.have.status(201);\r",
+					"    });\r",
+					"}\r",
+					"\r",
+					"pm.test(\"Authorization header is present in request\", function () {\r",
+					"    const authHeader = pm.request.headers.get(\"Authorization\");\r",
+					"    pm.expect(authHeader).to.include(\"Bearer\");\r",
+					"});"
+				]
+			}
+		}
+	]
+}

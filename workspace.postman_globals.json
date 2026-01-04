@@ -1,0 +1,27 @@
+{
+	"id": "0bffe0ca-f3ec-4308-80b9-dcefe409408b",
+	"values": [
+		{
+			"key": "BaseUrl",
+			"value": "https://gorest.co.in",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "Token",
+			"value": "Bearer a33ec5a74ebe7eca4397f5dc9ef94914da3c191afec5ad907ca21087a66f1454",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "Url",
+			"value": "https://postman-echo.com",
+			"type": "default",
+			"enabled": true
+		}
+	],
+	"name": "Globals",
+	"_postman_variable_scope": "globals",
+	"_postman_exported_at": "2026-01-04T16:06:13.590Z",
+	"_postman_exported_using": "Postman/11.77.2"
+}

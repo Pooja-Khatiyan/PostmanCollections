@@ -1,0 +1,482 @@
+{
+	"info": {
+		"_postman_id": "1ce7cfa9-4091-4c1f-b737-ec8ebddd5229",
+		"name": "Lecture-2:ContactsApi",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27729383",
+		"_collection_link": "https://galactic-comet-243943.postman.co/workspace/APILearning~1c523ad8-f6fc-445b-aa3a-4366d6901308/collection/27729383-1ce7cfa9-4091-4c1f-b737-ec8ebddd5229?action=share&source=collection_link&creator=27729383"
+	},
+	"item": [
+		{
+			"name": "1-TokenApi",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if(pm.request.method == 'POST'){ \r",
+							"       pm.test(\"status code is 200\", function(){      \r",
+							"        pm.response.to.have.status(200);  \r",
+							"     });\r",
+							"}\r",
+							"\r",
+							"pm.test(\"Response time is less than 5000ms\", function(){\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"poojakhatiyan021@gmail.com\",\r\n    \"password\" : \"Test@12345\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseurl}}/users/login",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"users",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateUser",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var template = `\r",
+							"<table bgcolor=\"#FFFFFF\" border=\"1\" cellpadding=\"5\" cellspacing=\"0\">\r",
+							"    <tr bgcolor=\"#ff7f39\">\r",
+							"        <th>ID</th>\r",
+							"        <th>First Name</th>\r",
+							"        <th>Last Name</th>\r",
+							"        <th>Owner</th>\r",
+							"    </tr>\r",
+							"    <tr>\r",
+							"        <td>{{_id}}</td>\r",
+							"        <td>{{firstName}}</td>\r",
+							"        <td>{{lastName}}</td>\r",
+							"        <td>{{owner}}</td>\r",
+							"    </tr>\r",
+							"</table>\r",
+							"`;\r",
+							"\r",
+							"pm.visualizer.set(template, pm.response.json());\r",
+							"\r",
+							"const response = pm.response.json();\r",
+							"const contactID = response._id;\r",
+							"console.log(\"user id is = \" + contactID);\r",
+							"pm.variables.set(\"user_id\",contactID);\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.sendRequest(\r",
+							"    {\r",
+							"        url: pm.environment.get(\"baseurl\")+'/users/login',\r",
+							"        method: 'POST',\r",
+							"        header: {\r",
+							"            'Content-Type': 'application/json'\r",
+							"        },\r",
+							"        body: {\r",
+							"            mode: 'raw',\r",
+							"            raw: JSON.stringify({\r",
+							"                \"email\": pm.environment.get(\"email\"),\r",
+							"                \"password\": pm.environment.get(\"password\")\r",
+							"            })\r",
+							"        }\r",
+							"    }, \r",
+							"    function(error, response) {\r",
+							"        if (error) {\r",
+							"            console.log(\"Error: \", error);\r",
+							"        } else {\r",
+							"            console.log(\"Full Response: \", response.text());  // Debug line\r",
+							"            const responseData = JSON.parse(response.text());\r",
+							"            const tokenID = responseData.token;\r",
+							"            console.log(\"Token ID is = \" + tokenID);\r",
+							"            pm.variables.set(\"contact_token_ID\", tokenID);\r",
+							"        }\r",
+							"    }\r",
+							");"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{contact_token_ID}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\" : \"Pooja\",\r\n    \"lastName\" : \"Khatiyan\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseurl}}/contacts",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"contacts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetUser",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var template = `\r",
+							"<table bgcolor=\"#FFFFFF\" border=\"1\" cellpadding=\"5\" cellspacing=\"0\">\r",
+							"    <tr bgcolor=\"#ff7f39\">\r",
+							"        <th>ID</th>\r",
+							"        <th>First Name</th>\r",
+							"        <th>Last Name</th>\r",
+							"        <th>Owner</th>\r",
+							"    </tr>\r",
+							"\r",
+							"    {{#each response}}\r",
+							"    <tr>\r",
+							"        <td>{{_id}}</td>\r",
+							"        <td>{{firstName}}</td>\r",
+							"        <td>{{lastName}}</td>\r",
+							"        <td>{{owner}}</td>\r",
+							"    </tr>\r",
+							"    {{/each}}\r",
+							"</table>\r",
+							"`;\r",
+							"\r",
+							"pm.visualizer.set(template, {\r",
+							"    response: pm.response.json()\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{contact_token_ID}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseurl}}/contacts",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"contacts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetSpecificUser",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{contact_token_ID}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseurl}}/contacts/{{user_id}}",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"contacts",
+						"{{user_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateUser",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var template = `\r",
+							"<table bgcolor=\"#FFFFFF\" border=\"1\" cellpadding=\"5\" cellspacing=\"0\">\r",
+							"    <tr bgcolor=\"#ff7f39\">\r",
+							"        <th>ID</th>\r",
+							"        <th>First Name</th>\r",
+							"        <th>Last Name</th>\r",
+							"        <th>Owner</th>\r",
+							"        <th>Birthdate</th>\r",
+							"        <th>City</th>\r",
+							"        <th>Country</th>\r",
+							"        <th>Email</th>\r",
+							"        <th>Phone</th>\r",
+							"        <th>Postal Code</th>\r",
+							"        <th>State Province</th>\r",
+							"        <th>Street 1</th>\r",
+							"        <th>Street 2</th>\r",
+							"    </tr>\r",
+							"    <tr>\r",
+							"        <td>{{_id}}</td>\r",
+							"        <td>{{firstName}}</td>\r",
+							"        <td>{{lastName}}</td>\r",
+							"        <td>{{owner}}</td>\r",
+							"        <td>{{birthdate}}</td>\r",
+							"        <td>{{city}}</td>\r",
+							"        <td>{{country}}</td>\r",
+							"        <td>{{email}}</td>\r",
+							"        <td>{{phone}}</td>\r",
+							"        <td>{{postalCode}}</td>\r",
+							"        <td>{{stateProvince}}</td>\r",
+							"        <td>{{street1}}</td>\r",
+							"        <td>{{street2}}</td>\r",
+							"    </tr>\r",
+							"</table>\r",
+							"`;\r",
+							"\r",
+							"pm.visualizer.set(template, pm.response.json());\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{contact_token_ID}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\": \"Pooja\",\r\n    \"lastName\": \"Khatiyan\",\r\n    \"birthdate\": \"1990-05-21\",\r\n    \"email\": \"amiller@fake.com\",\r\n    \"phone\": \"8005554242\",\r\n    \"street1\": \"13 School St.\",\r\n    \"street2\": \"Apt. 5\",\r\n    \"city\": \"Washington\",\r\n    \"stateProvince\": \"QC\",\r\n    \"postalCode\": \"A1A1A1\",\r\n    \"country\": \"Canada\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseurl}}/contacts/{{user_id}}",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"contacts",
+						"{{user_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PartialUpdateUser",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{contact_token_ID}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\": \"Pooja\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseurl}}/contacts/{{user_id}}",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"contacts",
+						"{{user_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteUser",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{contact_token_ID}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseurl}}/contacts/{{user_id}}",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"contacts",
+						"{{user_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "FetchUserAfterDelete",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if(pm.request.method == 'GET'){\r",
+							"    pm.test(\"status code is 404\", function(){\r",
+							"        pm.response.to.have.status(404);\r",
+							"    });\r",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{contact_token_ID}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseurl}}/contacts/{{user_id}}",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"contacts",
+						"{{user_id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					"if(pm.info.requestName!=='FetchUserAfterDelete'){\r",
+					"if(pm.request.method == 'GET'){\r",
+					"    pm.test(\"status code is 200\", function(){\r",
+					"        pm.response.to.have.status(200);\r",
+					"    });\r",
+					"}\r",
+					"}\r",
+					"\r",
+					"if(pm.info.requestName!=='1-TokenApi'){\r",
+					"if(pm.request.method == 'POST'){\r",
+					"    pm.test(\"status code is 201\", function(){\r",
+					"        pm.response.to.have.status(201);\r",
+					"    });\r",
+					"}\r",
+					"}\r",
+					"if(pm.request.method == 'PUT' || pm.request.method == 'PATCH'){\r",
+					"    pm.test(\"status code is 200\", function(){\r",
+					"        pm.response.to.have.status(200);\r",
+					"    });\r",
+					"}\r",
+					"\r",
+					"if(pm.request.method == 'DELETE'){\r",
+					"    pm.test(\"status code is 200\", function(){\r",
+					"        pm.response.to.have.status(200);\r",
+					"    });\r",
+					"}\r",
+					"\r",
+					"if(pm.info.requestName!=='1-TokenApi'){\r",
+					"pm.test(\"Response time is less than 2000ms\", function(){\r",
+					"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+					"});\r",
+					"}"
+				]
+			}
+		}
+	]
+}

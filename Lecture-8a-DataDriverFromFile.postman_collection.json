@@ -1,0 +1,48 @@
+{
+	"info": {
+		"_postman_id": "1e2adb0f-10be-4205-a64f-e8313ca3382a",
+		"name": "Lecture-8a:DataDriverFromFile",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27729383",
+		"_collection_link": "https://galactic-comet-243943.postman.co/workspace/APILearning~1c523ad8-f6fc-445b-aa3a-4366d6901308/collection/27729383-1e2adb0f-10be-4205-a64f-e8313ca3382a?action=share&source=collection_link&creator=27729383"
+	},
+	"item": [
+		{
+			"name": "2-CreateUserByJsonFile",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer a33ec5a74ebe7eca4397f5dc9ef94914da3c191afec5ad907ca21087a66f1454",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"name\": \"{{name}}\",\r\n        \"email\":\"{{$randomEmail}}\",\r\n        \"gender\": \"{{gender}}\",\r\n        \"status\": \"{{status}}\"\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://gorest.co.in/public/v2/users",
+					"protocol": "https",
+					"host": [
+						"gorest",
+						"co",
+						"in"
+					],
+					"path": [
+						"public",
+						"v2",
+						"users"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
