@@ -29,14 +29,20 @@ pipeline {
             }
         }
         
-        stage('Run API Test Cases') {
-            steps {
-                bat '''
-                    if not exist results mkdir results
-                    newman run Lecture-7b-BookingApi.postman_collection.json -e BookingApi.postman_environment.json -n 2 -r htmlextra,cli --reporter-htmlextra-export results\\report.html
-                '''
-            }
-        }
+        stage('Run API Tests') {
+    steps {
+        bat '''
+            if not exist results mkdir results
+            newman run Lecture-7b-BookingApi.postman_collection.json ^
+                -e BookingApi.postman_environment.json ^
+                -n 2 ^
+                -r htmlextra,cli ^
+                --reporter-htmlextra-export results\\report.html ^
+                --disable-unicode ^
+                --color off
+        '''
+    }
+}
         
         stage('Publish HTML Report') {
             steps {
